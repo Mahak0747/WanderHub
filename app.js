@@ -4,11 +4,14 @@ const mongoose=require("mongoose");
 const path=require("path");
 const Listing=require("./models/listing.js");
 const methodOverrid= require('method-override');
+const ejsMate=require('ejs-mate');
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverrid("_method"));
+app.engine('ejs',ejsMate);
+app.use(express.static(path.join(__dirname,"public")));
 
 main().catch(err => console.log(err));
 async function main() {
