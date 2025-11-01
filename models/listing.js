@@ -13,7 +13,8 @@ const listingSchema = new mongoose.Schema({
     },
     url: {
       type: String,
-      default: "https://stocksnap.io/photo/beach-H3LPBAEEV9"
+      default: "https://5.imimg.com/data5/ANDROID/Default/2021/10/AN/OY/YI/58559426/product-jpeg-500x500.jpg",
+      set: v => v === "" ? "https://5.imimg.com/data5/ANDROID/Default/2021/10/AN/OY/YI/58559426/product-jpeg-500x500.jpg" : v
     }
   },
   price: Number,
