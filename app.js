@@ -7,6 +7,7 @@ const methodOverrid= require('method-override');
 const ejsMate=require('ejs-mate');
 const wrapAsyc=require('./utils/wrapAsyc.js')
 const ExpressError=require('./utils/ExpressError.js')
+const {listingSchema}=require('./schema.js')
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -27,6 +28,16 @@ app.listen(8080,()=>{
 app.get("/",(req,res)=>{
     res.send("Hi I am root");
 })
+
+const validateListing=(req,res,next)=>{
+  let {error}=listingSchema.validate(req.body);
+  if(error){
+    throw new ExpressError(400,error);
+  }
+  else{
+    next();
+  }
+}
 
 // app.get("/testListing",async(req,res)=>{
 //     let testListing=new Listing({
@@ -51,7 +62,7 @@ app.get("/listings/new",(req,res)=>{
 })
 
 //create route
-app.post("/listings",wrapAsyc(async(req,res)=>{
+app.post("/listings",validateListing,wrapAsyc(async(req,res)=>{
   // let {title,description,image,price,location,country}=req.body;
   // let newListing=new Listing({
   //   title:title,
@@ -68,9 +79,6 @@ app.post("/listings",wrapAsyc(async(req,res)=>{
   // .catch((err) => {
   //   console.log(err)
   // }); 
-  if(!req.body.listing){
-    throw new ExpressError(404,"Send valid data for listing")
-  }
   let newListing=new Listing(req.body.listing); 
   await newListing.save();
   res.redirect("/listings"); 
@@ -90,10 +98,7 @@ app.get("/listings/:id/edit",wrapAsyc(async(req,res)=>{
 }))
 
 //update route
-app.put("/listings/:id",wrapAsyc(async(req,res)=>{
-  if(!req.body.listing){
-    throw new ExpressError(404,"Send valid data for listing")
-  }
+app.put("/listings/:id",validateListing,wrapAsyc(async(req,res)=>{
   let {id}=req.params;
   await Listing.findByIdAndUpdate(id,{...req.body.listing});
   res.redirect(`/listings/${id}`);
@@ -111,6 +116,6 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "Something went wrong!!" } = err;
-  res.render("error",{message})
+  res.status(statusCode).render("error",{message})
   // res.status(statusCode).send(message);
 }); 
