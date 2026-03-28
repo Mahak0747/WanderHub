@@ -9,14 +9,14 @@ const upload = multer({ storage })
 
 router.route("/")
 .get(wrapAsyc(listingController.index))
-.post(isLoggedIn,validateListing,upload.single("listing[image][url]"),wrapAsyc(listingController.createListing))
+.post(isLoggedIn,validateListing,upload.single("listing[image]"),wrapAsyc(listingController.createListing))
 
 router.get("/new",isLoggedIn,listingController.renderNewForm);
 
 //Show route
 router.route("/:id")
 .get(isLoggedIn,wrapAsyc(listingController.showListing))
-.put(isLoggedIn,isOwner,validateListing,wrapAsyc(listingController.updateListing))
+.put(isLoggedIn,isOwner,upload.single("listing[image]"),validateListing,wrapAsyc(listingController.updateListing))
 .delete(isLoggedIn,isOwner,wrapAsyc(listingController.deleteListing))
 
 //Edit route
