@@ -1,10 +1,21 @@
 const Listing=require("../models/listing.js");
 const axios = require("axios");
 
-module.exports.index=async(req,res)=>{
-  const allListings=await Listing.find({})
-  res.render("listings/index",{allListings});
-}
+module.exports.index = async (req, res) => {
+  let { search } = req.query;
+  let allListings;
+  if (search) {
+    allListings = await Listing.find({
+      $or: [
+        { title: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } }
+      ]
+    });
+  } else {
+    allListings = await Listing.find({});
+  }
+  res.render("listings/index", { allListings });
+};
 module.exports.renderNewForm=(req,res)=>{
   res.render("listings/new.ejs");
 }
