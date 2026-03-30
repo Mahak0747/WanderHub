@@ -8,10 +8,12 @@ const methodOverrid= require('method-override');
 const ejsMate=require('ejs-mate');
 const ExpressError=require('./utils/ExpressError.js');
 const session=require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const Users = require('./models/user.js');
+const dbUrl=process.env.ATLASDB_URL;
 
 const listings=require("./routes/listing.js");
 const reviews=require("./routes/review.js");
@@ -24,17 +26,31 @@ app.use(methodOverrid("_method"));
 app.engine('ejs',ejsMate);
 app.use(express.static(path.join(__dirname,"public")));
 
+
 main().catch(err => console.log(err));
+
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/wanderhub');
+  await mongoose.connect(dbUrl);
 };
 
 app.listen(8080,()=>{
     console.log("server is listening to port 8080");
 });
 
-sessionOptions={
-  secret:"silentsecret",
+const store=MongoStore.create({
+  mongoUrl:dbUrl,
+  crypto:{
+    secret:process.env.SECRET,
+  },
+  touchAfter:24*3600,
+})
+
+store.on("error",()=>{
+  console.log("ERROR in MONGO SESSION STORE", err);
+})
+const sessionOptions={
+  store,
+  secret:process.env.SECRET,
   resave:false,
   saveUninitialized:true,
   cookie:{
