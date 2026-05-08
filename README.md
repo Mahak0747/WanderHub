@@ -2,10 +2,10 @@
 
 **WanderHub** is a full-stack web application inspired by Airbnb. It allows users to explore, create, and manage property listings for travel stays. With features like image uploads, geolocation, reviews, and secure authentication, the platform offers a complete experience for both hosts and travelers.
 
-<img width="500" src="https://github.com/user-attachments/assets/eb849f63-620d-4a7c-ac98-535f307ad5e3" />
-<img width="500" src="https://github.com/user-attachments/assets/b4909f4d-4389-44a7-a949-d11226eb7299" />
-<img width="500" src="https://github.com/user-attachments/assets/219662f9-ba4b-42c3-b775-0698852c87b2" />
-<img width="500" src="https://github.com/user-attachments/assets/d98dd519-1523-4c96-8785-a4230370e25d" />
+<img width="150" src="https://github.com/user-attachments/assets/eb849f63-620d-4a7c-ac98-535f307ad5e3" />
+<img width="150" src="https://github.com/user-attachments/assets/b4909f4d-4389-44a7-a949-d11226eb7299" />
+<img width="150" src="https://github.com/user-attachments/assets/219662f9-ba4b-42c3-b775-0698852c87b2" />
+<img width="150" src="https://github.com/user-attachments/assets/d98dd519-1523-4c96-8785-a4230370e25d" />
 
 ---
 
